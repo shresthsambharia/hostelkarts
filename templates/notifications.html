@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="fw-bold mb-4">Notifications</h2>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        {% if notifications %}
+        <div class="list-group shadow-sm border-0 rounded-4 overflow-hidden">
+            {% for n in notifications %}
+            <div class="list-group-item list-group-item-action p-4 border-start-0 border-end-0 border-bottom">
+                <div class="d-flex gap-3">
+                    <div class="mt-1">
+                        {% if n.type == 'Order' %}
+                        <i class="bi bi-box-seam text-primary fs-4"></i>
+                        {% else %}
+                        <i class="bi bi-bell text-secondary fs-4"></i>
+                        {% endif %}
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center w-100 mb-1">
+                            <h6 class="mb-0 fw-bold">{{ n.type }} Update</h6>
+                            <small class="text-muted">{{ n.sentAt.strftime('%b %d, %H:%M') }}</small>
+                        </div>
+                        <p class="mb-0 text-muted">{{ n.message }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state bg-white rounded shadow-sm border">
+            <i class="bi bi-bell-slash"></i>
+            <h4 class="fw-bold">All caught up!</h4>
+            <p class="text-muted">You have no new notifications.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

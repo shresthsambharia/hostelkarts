@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mb-4">
+    <a href="{{ url_for('index') }}" class="text-decoration-none text-muted"><i class="bi bi-arrow-left me-2"></i>Back to Products</a>
+</div>
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0">
+            <div class="row g-0">
+                <div class="col-md-5 bg-light p-0 overflow-hidden border-end">
+                    <img src="{{ url_for('static', filename='images/product_' ~ product.productId ~ '.svg') }}" onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/fallback.svg') }}'" alt="{{ product.name }}" class="product-detail-img">
+                </div>
+                <div class="col-md-7">
+                    <div class="card-body p-4 p-md-5 d-flex flex-column h-100">
+                        <span class="badge {% if product.stockQuantity > 0 %}bg-success-subtle text-success{% else %}bg-danger-subtle text-danger{% endif %} align-self-start mb-3">
+                            {% if product.stockQuantity > 0 %}{{ product.stockQuantity }} Available{% else %}Out of Stock{% endif %}
+                        </span>
+                        
+                        <h2 class="fw-bold mb-2">{{ product.name }}</h2>
+                        <h3 class="text-accent fw-bold mb-4">₹{{ "%.2f"|format(product.price) }}</h3>
+                        
+                        <p class="text-muted mb-4 flex-grow-1">{{ product.description }}</p>
+                        
+                        {% if current_user.is_authenticated and current_user.type == 'student' %}
+                            {% if product.stockQuantity > 0 %}
+                            <form action="{{ url_for('add_to_cart', product_id=product.productId) }}" method="POST" class="mt-auto border-top pt-4">
+                                <div class="d-flex gap-3 align-items-center">
+                                    <div class="input-group" style="width: 140px;">
+                                        <span class="input-group-text bg-light">Qty</span>
+                                        <input type="number" name="quantity" value="1" min="1" max="{{ product.stockQuantity }}" class="form-control text-center fw-bold">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary flex-grow-1 py-2 shadow-sm">
+                                        <i class="bi bi-cart-plus me-2"></i>Add to Cart
+                                    </button>
+                                </div>
+                            </form>
+                            {% else %}
+                            <div class="alert alert-warning mt-auto mb-0"><i class="bi bi-exclamation-triangle me-2"></i> Currently out of stock.</div>
+                            {% endif %}
+                        {% elif not current_user.is_authenticated %}
+                            <div class="mt-auto border-top pt-4">
+                                <a href="{{ url_for('login') }}" class="btn btn-outline-primary w-100">Login to Purchase</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

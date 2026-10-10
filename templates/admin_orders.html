@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">Order Management</h2>
+    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary btn-sm">Back</a>
+</div>
+<div class="table-container shadow-sm">
+    <table class="table table-hover align-middle mb-0">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Student ID</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Assign Partner</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for o in orders %}
+            <tr>
+                <td class="fw-bold">#{{ o.orderId }}</td>
+                <td>{{ o.studentId }}</td>
+                <td class="small">{{ o.orderDate.strftime('%b %d, %H:%M') }}</td>
+                <td><span class="badge bg-light text-dark border">{{ o.status }}</span></td>
+                <td>
+                    {% if o.status == 'Confirmed' %}
+                    <form action="{{ url_for('assign_delivery', order_id=o.orderId) }}" method="POST" class="d-flex gap-2">
+                        <select name="partner_id" class="form-select form-select-sm" required style="width:130px;">
+                            <option value="">Select...</option>
+                            {% for dp in partners %}
+                            <option value="{{ dp.id }}">{{ dp.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-primary">Assign</button>
+                    </form>
+                    {% elif o.delivery and o.delivery.partnerId %}
+                    <span class="small text-success"><i class="bi bi-check-circle me-1"></i>Assigned (ID: {{ o.delivery.partnerId }})</span>
+                    {% else %}
+                    <span class="small text-muted">-</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

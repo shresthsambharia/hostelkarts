@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="fw-bold mb-4"><i class="bi bi-people-fill text-primary me-2"></i>Hostel Groups</h2>
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-white fw-bold">My Groups</div>
+            <div class="list-group list-group-flush">
+                {% for g in my_groups %}
+                <div class="list-group-item py-3">
+                    <h6 class="fw-bold">{{ g.name }}</h6>
+                    <p class="mb-0 text-muted small">{{ g.description }}</p>
+                </div>
+                {% else %}
+                <div class="list-group-item text-muted py-4 text-center">You haven't joined any groups yet.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-white fw-bold">Available Groups</div>
+            <div class="list-group list-group-flush">
+                {% for g in all_groups %}
+                    {% if g not in my_groups %}
+                    <div class="list-group-item py-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="fw-bold mb-1">{{ g.name }}</h6>
+                            <p class="mb-0 text-muted small">{{ g.description }}</p>
+                        </div>
+                        <form action="{{ url_for('join_group', group_id=g.groupId) }}" method="POST">
+                            <button type="submit" class="btn btn-sm btn-outline-primary">Join</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

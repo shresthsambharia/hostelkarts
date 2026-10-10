@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-danger"><i class="bi bi-shield-exclamation me-2"></i>DEMO MODE</h2>
+            <p class="text-muted">Payment processing simulation</p>
+        </div>
+        
+        <div class="card shadow-lg border-0 overflow-hidden">
+            <div class="bg-warning text-dark text-center py-2 fw-bold px-3" style="font-size: 0.85rem; letter-spacing: 0.5px;">
+                <i class="bi bi-info-circle me-1"></i> THIS IS A MOCK GATEWAY FOR DEMONSTRATION ONLY
+            </div>
+            <div class="card-body p-4 p-md-5">
+                <div class="text-center mb-4 pb-4 border-bottom">
+                    <h5 class="text-muted mb-1">Order #{{ order.orderId }} Total</h5>
+                    <h1 class="fw-bold text-accent display-4">₹{{ "%.2f"|format(order.totalAmount) }}</h1>
+                </div>
+                
+                <h6 class="fw-bold mb-3">Simulate Payment Result</h6>
+                <p class="text-muted small mb-4">Choose an outcome below to test the transaction workflows and state transitions.</p>
+                
+                
+
+<div class="mb-4 text-start">
+    <label class="form-label fw-bold">Delivery Address</label>
+    <textarea name="delivery_address" class="form-control" rows="2" required>{{ current_user.address }}</textarea>
+</div>
+
+<div class="mb-4 text-start">
+    <label class="form-label fw-bold">Select Payment Method</label>
+    <select name="payment_method" class="form-select">
+        <option value="card">Credit/Debit Card</option>
+        <option value="upi">UPI / Wallet</option>
+        <option value="cod">Cash on Delivery (COD)</option>
+    </select>
+</div>
+<form method="POST" class="d-flex flex-column gap-3">
+
+                    <button type="submit" name="action" value="success" class="btn btn-success py-3 fw-bold d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-check-circle-fill"></i> Simulate Payment Success
+                    </button>
+                    <button type="submit" name="action" value="fail" class="btn btn-outline-danger py-3 fw-bold d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-x-circle-fill"></i> Simulate Payment Failure
+                    </button>
+                </form>
+            </div>
+            <div class="card-footer bg-light text-center py-3 text-muted small">
+                No real card details are collected or processed.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

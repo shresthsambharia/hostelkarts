@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+*.pyc
+instance/
+hostelkart.db
+.env
+.pytest_cache/
